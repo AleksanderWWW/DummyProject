@@ -1,17 +1,17 @@
 import argh
 from tqdm import tqdm
-import json
+import msgpack
 
 from api.api import get_info
 
 
 def print_info(number: int = 0) -> None:
     """Function accepts an integer and returns random trivia about the number, fetched from 'numbersapi.com'"""
-    get_info(number)
+    print(get_info(number))
 
 
-def info_to_json(out_file_name, *numbers) -> None:
-    result = {}
+def info_to_binary(out_file_name: str, *numbers: int) -> None:
+    result: dict = {}
 
     bar = tqdm(desc="Scraping process", total=len(numbers))
     for number in numbers:
@@ -20,12 +20,11 @@ def info_to_json(out_file_name, *numbers) -> None:
         bar.update(1)
     bar.close()
 
-    print("Writing results to json...", end="")
-    with open(out_file_name, "w") as fp:
-        json.dump(result, fp)
+    print("Writing results to msgpack...", end="")
+    with open(out_file_name, "wb") as fp:
+        fp.write(msgpack.packb(result))
     print("done")
 
 
 if __name__ == '__main__':
-    # argh.dispatch_command(print_info)
-    argh.dispatch_command(info_to_json)
+    argh.dispatch_commands([print_info, info_to_binary])

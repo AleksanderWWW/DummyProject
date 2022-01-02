@@ -1,3 +1,4 @@
 .idea/
 *.json
+*.msgpack
 api/__pycache__/*
