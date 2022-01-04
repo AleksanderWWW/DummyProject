@@ -1,4 +1,4 @@
-.PHONY: run clean
+.PHONY: run_print run_to_msgpack test clean
 
 setup: requirements.txt
 	pip install -r requirements.txt
