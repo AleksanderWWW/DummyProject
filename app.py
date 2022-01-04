@@ -1,6 +1,8 @@
 import argh
 from tqdm import tqdm
 import msgpack
+from pathlib import Path
+import os
 
 from api.api import get_info
 
@@ -21,7 +23,8 @@ def info_to_binary(out_file_name: str, *numbers: int) -> None:
     bar.close()
 
     print("Writing results to msgpack...", end="")
-    with open(out_file_name, "wb") as fp:
+    save_path = Path(os.getcwd(), "output", out_file_name)
+    with open(save_path, "wb") as fp:
         fp.write(msgpack.packb(result))
     print("done")
 
